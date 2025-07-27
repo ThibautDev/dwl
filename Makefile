@@ -68,15 +68,14 @@ install: dwl
 	cp -f dwl.1 $(DESTDIR)$(MANDIR)/man1
 	chmod 644 $(DESTDIR)$(MANDIR)/man1/dwl.1
 	mkdir -p $(DESTDIR)$(DATADIR)/wayland-sessions
-	cp -f start-dwl $(DESTDIR)$(PREFIX)/bin/start-dwl
-	chmod 755 $(DESTDIR)$(PREFIX)/bin/start-dwl
+	sudo mkdir -p /usr/share/wayland-sessions/
 	cp -f dwl.desktop /usr/share/wayland-sessions/dwl.desktop
 	chmod 644 /usr/share/wayland-sessions/dwl.desktop
 
 uninstall:
-	rm -f $(DESTDIR)$(PREFIX)/bin/dwl $(DESTDIR)$(MANDIR)/man1/dwl.1 \
-    $(DESTDIR)$(PREFIX)/bin/start-dwl
-		/usr/share/wayland-sessions/dwl.desktop \
+	rm -f $(DESTDIR)$(PREFIX)/bin/dwl \
+		$(DESTDIR)$(MANDIR)/man1/dwl.1 \
+		/usr/share/wayland-sessions/dwl.desktop 
 
 .SUFFIXES: .c .o
 .c.o:
