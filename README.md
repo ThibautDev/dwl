@@ -1,4 +1,4 @@
 ## Dependencys :
-* wlroots
+* wlroots0.18
 * tllist
 * fcft
