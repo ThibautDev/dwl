@@ -12,7 +12,14 @@ static const unsigned int gappx            = 10; /* gap pixel between windows */
 static const unsigned int borderpx         = 1;  /* border pixel of windows */
 static const int showbar                   = 1; /* 0 means no bar */
 static const int topbar                    = 1; /* 0 means bottom bar */
-static const char *fonts[]                 = {"monospace:size=10"};
+static const char *fonts[]                 = {"monospace:size=11"};
+static const char *tbar_fonts[]            = {"monospace:size=11"};
+static const int tbar_top                  = 0;
+static const int tbar_height               = -1;
+static const int tbar_borderpx             = 1;
+static const int tbar_padding              = 10;
+static const float tbar_scale              = -1; /* -1 means use monitor scale */
+static const int tbar_float_sel_sep        = 0; /* should tbar be highlighted only on the currently selected window or on both the last selected floating window and the laste selected tiling window */
 static const float rootcolor[]             = COLOR(0x000000ff);
 /* This conforms to the xdg-protocol. Set the alpha to zero to restore the old behavior */
 static const float fullscreen_bg[]         = {0.1f, 0.1f, 0.1f, 1.0f}; /* You can also use glsl colors */
@@ -21,6 +28,13 @@ static uint32_t colors[][3]                = {
 	[SchemeNorm] = { 0xbbbbbbff, 0x222222ff, 0x444444ff },
 	[SchemeSel]  = { 0xeeeeeeff, 0x005577ff, 0x005577ff },
 	[SchemeUrg]  = { 0,          0,          0x770000ff },
+};
+
+static uint32_t tbar_colors[][3]       = {
+	/*               fg          bg          border    */
+	[SchemeNorm] = { 0xbbbbbbff, 0x222222ff, 0x555555ff },
+	[SchemeSel]  = { 0xeeeeeeff, 0x005577ff, 0x555555ff },
+	[SchemeUrg]  = { 0xc7c7c7ff, 0x222222ff, 0x770000ff },
 };
 
 /* tagging - TAGCOUNT must be no greater than 31 */
@@ -44,12 +58,15 @@ static const Rule rules[] = {
 	{ "firefox_EXAMPLE",  NULL,       1 << 8,       0,           -1 }, /* Start on ONLY tag "9" */
 };
 
+static const unsigned int floating_tbar_type = TBarLabel;
+static const int floating_tbar_only_top = 0;
+
 /* layout(s) */
 static const Layout layouts[] = {
-	/* symbol     arrange function */
-	{ "[]=",      tile },
-	{ "><>",      NULL },    /* no layout function means floating behavior */
-	{ "[M]",      monocle },
+	/* symbol     tbar type      tbar only on top     arrange function */
+	{ "[]=",      TBarLabel,     0,                   tile },
+	{ "><>",      TBarLabel,     0,                   NULL },    /* no layout function means floating behavior */
+	{ "[M]",      TBarMultiple,  1,                   monocle },
 };
 
 /* monitors */

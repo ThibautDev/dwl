@@ -1,0 +1,24 @@
+--- dwl.c
++++ dwl.c
+@@ -873,6 +919,21 @@ checkidleinhibitor(struct wlr_surface *exclude)
+ void
+ cleanup(void)
+ {
++	Client *c;
++	unsigned int i;
++
++	wl_list_for_each(c, &clients, link) {
++		if (!c->tbar_enabled)
++			continue;
++
++		for (i = 0; i < LENGTH(c->pool); i++)
++			wlr_buffer_drop(&c->pool[i]->base);
++
++		drwl_setimage(c->drw, NULL);
++		drwl_destroy(c->drw);
++
++		wlr_scene_node_destroy(&c->tbar_buffer->node);
++	}
+ #ifdef XWAYLAND
+ 	wlr_xwayland_destroy(xwayland);
+ 	xwayland = NULL;
