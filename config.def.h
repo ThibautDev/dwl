@@ -13,7 +13,7 @@ static const unsigned int borderpx         = 1;  /* border pixel of windows */
 static const int showbar                   = 1; /* 0 means no bar */
 static const int topbar                    = 1; /* 0 means bottom bar */
 static const char *fonts[]                 = {"monospace:size=11"};
-static const char *tbar_fonts[]            = {"monospace:size=11"};
+static const char **tbar_fonts = fonts;
 static const int tbar_top                  = 0;
 static const int tbar_height               = -1;
 static const int tbar_borderpx             = 1;
@@ -30,12 +30,7 @@ static uint32_t colors[][3]                = {
 	[SchemeUrg]  = { 0,          0,          0x770000ff },
 };
 
-static uint32_t tbar_colors[][3]       = {
-	/*               fg          bg          border    */
-	[SchemeNorm] = { 0xbbbbbbff, 0x222222ff, 0x555555ff },
-	[SchemeSel]  = { 0xeeeeeeff, 0x005577ff, 0x555555ff },
-	[SchemeUrg]  = { 0xc7c7c7ff, 0x222222ff, 0x770000ff },
-};
+static uint32_t (*tbar_colors)[3] = colors;
 
 /* tagging - TAGCOUNT must be no greater than 31 */
 static char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
