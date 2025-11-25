@@ -12,8 +12,7 @@ static const unsigned int gappx            = 10; /* gap pixel between windows */
 static const unsigned int borderpx         = 1;  /* border pixel of windows */
 static const int showbar                   = 1; /* 0 means no bar */
 static const int topbar                    = 1; /* 0 means bottom bar */
-static const int centeredtitle             = 1; /* 1 means centered title */
-static const char *fonts[]                 = {"monospace:size=10"};
+static const char *fonts[]                 = {"monospace:size=11"};
 static const unsigned int stairpx          = 20; /* depth of the stairs layout */
 static const int stairdirection            = 1;  /* 0: left-aligned, 1: right-aligned */
 static const int stairsamesize             = 1;  /* 1 means shrink all the staired windows to the same size */
@@ -66,7 +65,7 @@ static const MonitorRule monrules[] = {
 	*/
 	/* defaults */
 { "HDMI-A-1", 0.55f, 1, 1, &layouts[0], WL_OUTPUT_TRANSFORM_NORMAL, -1920, 0 },
-{ "eDP-1",    0.50f, 1, 2, &layouts[0], WL_OUTPUT_TRANSFORM_NORMAL, 0, 0 },
+{ "eDP-1",    0.50f, 1, 1.7, &layouts[0], WL_OUTPUT_TRANSFORM_NORMAL, 0, 0 },
 	{ NULL,       0.55f, 1,      1,    &layouts[0], WL_OUTPUT_TRANSFORM_NORMAL,   -1,  -1 },
 };
 
@@ -127,7 +126,7 @@ LIBINPUT_CONFIG_TAP_MAP_LMR -- 1/2/3 finger tap maps to left/middle/right
 static const enum libinput_config_tap_button_map button_map = LIBINPUT_CONFIG_TAP_MAP_LRM;
 
 /* If you want to use the windows key for MODKEY, use WLR_MODIFIER_LOGO */
-#define MODKEY WLR_MODIFIER_ALT
+#define MODKEY WLR_MODIFIER_LOGO
 
 #define TAGKEYS(KEY,SKEY,TAG) \
 	{ MODKEY,                    KEY,            view,            {.ui = 1 << TAG} }, \
