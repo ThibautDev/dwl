@@ -367,6 +367,7 @@ static void setpsel(struct wl_listener *listener, void *data);
 static void setsel(struct wl_listener *listener, void *data);
 static void setup(void);
 static void spawn(const Arg *arg);
+static void stairs(Monitor* m);
 static void startdrag(struct wl_listener *listener, void *data);
 static int statusin(int fd, unsigned int mask, void *data);
 static void tag(const Arg *arg);
@@ -877,6 +878,8 @@ cleanupmon(struct wl_listener *listener, void *data)
 	wl_list_remove(&m->frame.link);
 	wl_list_remove(&m->link);
 	wl_list_remove(&m->request_state.link);
+	if (m->lock_surface)
+		destroylocksurface(&m->destroy_lock_surface, NULL);
 	m->wlr_output->data = NULL;
 	wlr_output_layout_remove(output_layout, m->wlr_output);
 	wlr_scene_output_destroy(m->scene_output);
@@ -2856,6 +2859,53 @@ spawn(const Arg *arg)
 		setsid();
 		execvp(((char **)arg->v)[0], (char **)arg->v);
 		die("dwl: execvp %s failed:", ((char **)arg->v)[0]);
+	}
+}
+
+void
+stairs(Monitor *m)
+{
+	int i, n, h, mw, my;
+	int ox, oy, ow, oh;
+	Client *c;
+
+	n = 0;
+	wl_list_for_each(c, &clients, link)
+	if (VISIBLEON(c, m) && !c->isfloating && !c->isfullscreen)
+		n++;
+		if (n == 0)
+			return;
+
+	if (n > m->nmaster)
+		mw = m->nmaster ? (int)roundf(m->w.width * m->mfact) : 0;
+	else
+		mw = m->w.width;
+
+	i = my = 0;
+	wl_list_for_each(c, &clients, link) {
+		if (!VISIBLEON(c, m) || c->isfloating || c->isfullscreen)
+			continue;
+		if (i < m->nmaster) {
+			h = (m->w.height - my) / (MIN(n, m->nmaster) - i);
+			resize(c, (struct wlr_box){
+			       .x=m->w.x,.y=m->w.y + my,.width=mw,.height=h
+			     }, 0);
+			my += c->geom.height;
+		} else {
+			oy = i - m->nmaster;
+			ox = stairdirection ? n - i - 1 : (stairsamesize ? i - m->nmaster: 0);
+			ow = stairsamesize ? n - m->nmaster - 1 : n - i - 1;
+			oh = stairsamesize ? ow : i - m->nmaster;
+			resize(c, (struct wlr_box){
+			       .x=m->w.x + mw + (ox * stairpx),
+			       .y=m->w.y + (oy * stairpx),
+			       .width=m->w.width - mw - (ow * stairpx),
+			       .height=m->w.height - (oh * stairpx)
+			     }, 0);
+			if (c == focustop(selmon))
+				wlr_scene_node_raise_to_top(&c->scene->node);
+		}
+		i++;
 	}
 }
 
