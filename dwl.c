@@ -2877,13 +2877,13 @@ stairs(Monitor *m)
 			return;
 
 	if (n > m->nmaster)
-		mw = m->nmaster ? ROUND(m->w.width * m->mfact) : 0;
+		mw = m->nmaster ? (int)roundf(m->w.width * m->mfact) : 0;
 	else
 		mw = m->w.width;
 
 	i = my = 0;
 	wl_list_for_each(c, &clients, link) {
-		if (!VISIBLEON(c,m) || c->isfloating || c->fullscreen)
+		if (!VISIBLEON(c, m) || c->isfloating || c->isfullscreen)
 			continue;
 		if (i < m->nmaster) {
 			h = (m->w.height - my) / (MIN(n, m->nmaster) - i);
