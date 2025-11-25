@@ -65,6 +65,8 @@ static const MonitorRule monrules[] = {
 	{ "eDP-1",    0.5f,  1,      2,    &layouts[0], WL_OUTPUT_TRANSFORM_NORMAL,   -1,  -1 },
 	*/
 	/* defaults */
+{ "HDMI-A-1", 0.55f, 1, 1, &layouts[0], WL_OUTPUT_TRANSFORM_NORMAL, -1920, 0 },
+{ "eDP-1",    0.50f, 1, 2, &layouts[0], WL_OUTPUT_TRANSFORM_NORMAL, 0, 0 },
 	{ NULL,       0.55f, 1,      1,    &layouts[0], WL_OUTPUT_TRANSFORM_NORMAL,   -1,  -1 },
 };
 
@@ -74,6 +76,7 @@ static const struct xkb_rule_names xkb_rules = {
 	/* example:
 	.options = "ctrl:nocaps",
 	*/
+  .layout = "be",
 	.options = NULL,
 };
 
@@ -138,13 +141,15 @@ static const enum libinput_config_tap_button_map button_map = LIBINPUT_CONFIG_TA
 /* commands */
 static const char *termcmd[] = { "foot", NULL };
 static const char *menucmd[] = { "wmenu-run", NULL };
+static const char *browser[] = { "firefox", NULL };
 
 static const Key keys[] = {
 	/* Note that Shift changes certain key codes: c -> C, 2 -> at, etc. */
 	/* modifier                  key                 function        argument */
 	{ MODKEY,                    XKB_KEY_p,          spawn,          {.v = menucmd} },
 	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_Return,     spawn,          {.v = termcmd} },
-	{ MODKEY,                    XKB_KEY_b,          togglebar,      {0} },
+	{ MODKEY,                    XKB_KEY_b,          spawn,          {.v = browser} },
+	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_B,          togglebar,      {0} },
 	{ MODKEY,                    XKB_KEY_j,          focusstack,     {.i = +1} },
 	{ MODKEY,                    XKB_KEY_k,          focusstack,     {.i = -1} },
 	{ MODKEY,                    XKB_KEY_i,          incnmaster,     {.i = +1} },
