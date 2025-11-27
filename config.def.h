@@ -65,7 +65,7 @@ static const MonitorRule monrules[] = {
 	*/
 	/* defaults */
 { "HDMI-A-1", 0.55f, 1, 1, &layouts[0], WL_OUTPUT_TRANSFORM_NORMAL, -1920, 0 },
-{ "eDP-1",    0.50f, 1, 1.7, &layouts[0], WL_OUTPUT_TRANSFORM_NORMAL, 0, 0 },
+{ "eDP-1",    0.50f, 1, 1.8, &layouts[0], WL_OUTPUT_TRANSFORM_NORMAL, 0, 0 },
 	{ NULL,       0.55f, 1,      1,    &layouts[0], WL_OUTPUT_TRANSFORM_NORMAL,   -1,  -1 },
 };
 
@@ -86,7 +86,7 @@ static const int repeat_delay = 600;
 static const int tap_to_click = 1;
 static const int tap_and_drag = 1;
 static const int drag_lock = 1;
-static const int natural_scrolling = 0;
+static const int natural_scrolling = 1;
 static const int disable_while_typing = 1;
 static const int left_handed = 0;
 static const int middle_button_emulation = 0;
@@ -142,6 +142,10 @@ static const char *termcmd[] = { "foot", NULL };
 static const char *menucmd[] = { "wmenu-run", NULL };
 static const char *browser[] = { "firefox", NULL };
 
+static const char *raiseVolume[] = {"amixer", "set", "Master", "5%+", NULL};
+static const char *lowerVolume[] = {"amixer", "set", "Master", "5%-", NULL};
+static const char *toggleVolume[] = {"amixer", "set", "Master", "toggle", NULL};
+
 static const Key keys[] = {
 	/* Note that Shift changes certain key codes: c -> C, 2 -> at, etc. */
 	/* modifier                  key                 function        argument */
@@ -185,6 +189,10 @@ static const Key keys[] = {
   TAGKEYS( XKB_KEY_ccedilla,   XKB_KEY_9,         8 ),
   TAGKEYS( XKB_KEY_agrave,     XKB_KEY_0,         9 ),
 	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_Q,          quit,           {0} },
+
+  { 0, XKB_KEY_XF86AudioRaiseVolume, spawn, {.v = raiseVolume } },
+  { 0, XKB_KEY_XF86AudioLowerVolume, spawn, {.v = lowerVolume } },
+  { 0, XKB_KEY_XF86AudioMute,        spawn, {.v = toggleVolume } },
 
 	/* Ctrl-Alt-Backspace and Ctrl-Alt-Fx used to be handled by X server */
 	{ WLR_MODIFIER_CTRL|WLR_MODIFIER_ALT,XKB_KEY_Terminate_Server, quit, {0} },
